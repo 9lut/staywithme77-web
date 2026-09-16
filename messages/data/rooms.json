@@ -1,0 +1,117 @@
+{
+  "rooms": [
+    {
+      "id": "1",
+      "capacity": 2,
+      "price": 900,
+      "available": true,
+      "size": 22,
+      "image": "/room-standard.jpg",
+      "amenityKeys": ["wifi", "ac", "tv", "shower"],
+      "featured": true,
+      "th": {
+        "name": "Spacious Room 201",
+        "bedType": "เตียงดับเบิล",
+        "description": "ห้องพักอบอุ่น เหมาะสำหรับคู่รักหรือผู้เดินทางเดี่ยว ตกแต่งสไตล์โมเดิร์น สะอาด ครบครัน",
+        "amenities": ["Wi-Fi ฟรี", "แอร์ปรับอากาศ", "สมาร์ทีวี", "น้ำอุ่น", "ตู้เย็น"]
+      },
+      "en": {
+        "name": "Spacious Room 201",
+        "bedType": "Double bed",
+        "description": "A warm, modern room for couples or solo travellers, with a clean interior and all essential amenities.",
+        "amenities": ["Free Wi-Fi", "Air conditioning", "Smart TV", "Hot shower", "Refrigerator"]
+      }
+    },
+    {
+      "id": "2",
+      "capacity": 2,
+      "price": 1800,
+      "available": true,
+      "size": 22,
+      "image": "/room-standard.jpg",
+      "amenityKeys": ["wifi", "ac", "tv", "shower"],
+      "th": {
+        "name": "Double Room 301",
+        "bedType": "เตียงดับเบิล",
+        "description": "ห้องพักอบอุ่น เหมาะสำหรับคู่รักหรือผู้เดินทางเดี่ยว ตกแต่งสไตล์โมเดิร์น สะอาด ครบครัน",
+        "amenities": ["Wi-Fi ฟรี", "แอร์ปรับอากาศ", "สมาร์ทีวี", "น้ำอุ่น", "ตู้เย็น"]
+      },
+      "en": {
+        "name": "Double Room 301",
+        "bedType": "Double bed",
+        "description": "A warm, modern room for couples or solo travellers, with a clean interior and all essential amenities.",
+        "amenities": ["Free Wi-Fi", "Air conditioning", "Smart TV", "Hot shower", "Refrigerator"]
+      }
+    },
+    {
+      "id": "3",
+      "capacity": 2,
+      "price": 1200,
+      "available": true,
+      "size": 28,
+      "image": "/room-deluxe.jpg",
+      "amenityKeys": ["wifi", "ac", "tv", "fridge"],
+      "featured": true,
+      "th": {
+        "name": "Cozy Single Room 302",
+        "bedType": "เตียงเดี่ยว 2 เตียง",
+        "description": "ห้องกว้างขวางพร้อมเตียงเดี่ยว 2 เตียง เหมาะสำหรับเพื่อนหรือเพื่อนร่วมงาน วิวเมืองสวยงาม",
+        "amenities": ["Wi-Fi ฟรี", "แอร์ปรับอากาศ", "สมาร์ทีวี", "ตู้เย็น", "น้ำอุ่น", "วิวเมือง"]
+      },
+      "en": {
+        "name": "Cozy Single Room 302",
+        "bedType": "2 single beds",
+        "description": "A spacious twin room for friends or colleagues, featuring two single beds and a pleasant city view.",
+        "amenities": ["Free Wi-Fi", "Air conditioning", "Smart TV", "Refrigerator", "Hot shower", "City view"]
+      }
+    },
+    {
+      "id": "4",
+      "capacity": 2,
+      "price": 1200,
+      "available": true,
+      "size": 28,
+      "image": [
+        "/room-deluxe.jpg",
+        "/room-deluxe.jpg",
+        "/room-deluxe.jpg",
+        "/room-deluxe.jpg"
+      ],
+      "amenityKeys": ["wifi", "ac", "tv", "fridge"],
+      "th": {
+        "name": "Loft Suite 401",
+        "bedType": "เตียงเดี่ยว 2 เตียง",
+        "description": "ห้องกว้างขวางพร้อมเตียงเดี่ยว 2 เตียง เหมาะสำหรับเพื่อนหรือเพื่อนร่วมงาน วิวเมืองสวยงาม",
+        "amenities": ["Wi-Fi ฟรี", "แอร์ปรับอากาศ", "สมาร์ทีวี", "ตู้เย็น", "น้ำอุ่น", "วิวเมือง"]
+      },
+      "en": {
+        "name": "Loft Suite 401",
+        "bedType": "2 single beds",
+        "description": "A spacious twin room for friends or colleagues, featuring two single beds and a pleasant city view.",
+        "amenities": ["Free Wi-Fi", "Air conditioning", "Smart TV", "Refrigerator", "Hot shower", "City view"]
+      }
+    },
+    {
+      "id": "5",
+      "capacity": 4,
+      "price": 2500,
+      "available": true,
+      "size": 45,
+      "image": "/room-family.jpg",
+      "amenityKeys": ["wifi", "ac", "tv", "shower"],
+      "featured": true,
+      "th": {
+        "name": "Cozy Loft 402",
+        "bedType": "คิงไซส์ + โซฟาเบด",
+        "description": "ห้องสวีทกว้างขวางสำหรับครอบครัว มีพื้นที่นั่งเล่นแยก เหมาะสำหรับครอบครัวสูงสุด 4 ท่าน",
+        "amenities": ["Wi-Fi ฟรี", "แอร์ปรับอากาศ", "สมาร์ทีวี", "ตู้เย็น", "น้ำอุ่น", "โซฟาเบด"]
+      },
+      "en": {
+        "name": "Cozy Loft 402",
+        "bedType": "King bed + sofa bed",
+        "description": "A spacious family suite with a separate living area, suitable for families of up to four guests.",
+        "amenities": ["Free Wi-Fi", "Air conditioning", "Smart TV", "Refrigerator", "Hot shower", "Sofa bed"]
+      }
+    }
+  ]
+}
