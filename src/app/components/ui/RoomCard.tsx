@@ -63,18 +63,6 @@ export default function RoomCard({ room, compact = false }: RoomCardProps) {
           className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
         />
-        {/* Availability Badge */}
-        <div className="absolute top-2 right-2">
-          {room.available ? (
-            <span className="font-display rounded-full bg-white/90 text-emerald-950/90 px-2.5 py-1 text-[10px] font-semibold tracking-tight text-emerald-100 shadow-lg ring-1 ring-emerald-300/30 backdrop-blur-md">
-              {t("available")}
-            </span>
-          ) : (
-            <span className="font-display rounded-full bg-white/90 text-rose-950/90 px-2.5 py-1 text-[10px] font-semibold tracking-tight text-rose-100 shadow-lg ring-1 ring-rose-300/30 backdrop-blur-md">
-              {t("full")}
-            </span>
-          )}
-        </div>
       </div>
 
       {/* Content */}
@@ -134,7 +122,7 @@ export default function RoomCard({ room, compact = false }: RoomCardProps) {
           {compact ? (
             <Link
               onClick={() => trackEvent("start_booking", { room_id: room.id })}
-              href={`/rooms/${room.id}`}
+              href={`/rooms/${room.slug}`}
               id={`room-card-detail-${room.id}`}
               className="block w-full rounded-lg bg-foreground py-1.5 text-center text-xs font-semibold text-white transition-colors duration-200"
             >
@@ -146,7 +134,7 @@ export default function RoomCard({ room, compact = false }: RoomCardProps) {
                 onClick={() =>
                   trackEvent("start_booking", { room_id: room.id })
                 }
-                href={`/rooms/${room.id}`}
+                href={`/rooms/${room.slug}`}
                 id={`room-card-detail-${room.id}`}
                 className="flex-1 rounded-lg bg-gray-100 py-2 text-center text-xs font-semibold text-gray-700 transition-colors duration-200"
               >
@@ -157,7 +145,7 @@ export default function RoomCard({ room, compact = false }: RoomCardProps) {
                   onClick={() =>
                     trackEvent("start_booking", { room_id: room.id })
                   }
-                  href={`/rooms/${room.id}`}
+                  href={`/rooms/${room.slug}`}
                   id={`room-card-book-${room.id}`}
                   className="flex-1 rounded-lg bg-foreground py-2 text-center text-xs font-bold text-white transition-colors duration-200"
                 >

@@ -50,7 +50,7 @@ export default function Footer() {
     .slice(0, 4)
     .map((room) => ({
       label: `${locale === "en" ? room.nameEn : room.name} — ฿${room.price.toLocaleString()}/${common("night")}`,
-      href: `/rooms/${room.id}`,
+      href: `/rooms/${room.slug}`,
     }));
   const quickLinks = [
     { label: common("home"), href: "/" },

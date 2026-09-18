@@ -20,6 +20,9 @@
 # production
 /build
 
+# local high-resolution source photos (processed WebP files live in public/)
+/source-images/
+
 # misc
 .DS_Store
 *.pem

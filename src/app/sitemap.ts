@@ -23,7 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const rooms = routing.locales.flatMap((locale) =>
     mockRooms.map((room) => {
-      const path = `/rooms/${room.id}`;
+      const path = `/rooms/${room.slug}`;
       return {
         url: absoluteUrl(`/${locale}${path}`),
         changeFrequency: "weekly" as const,

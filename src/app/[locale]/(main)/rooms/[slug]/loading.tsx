@@ -14,9 +14,9 @@ export default function RoomDetailLoading() {
 
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-12">
           <div>
-            <Skeleton className="h-[290px] w-full rounded-xl sm:h-[380px] lg:h-[440px]" />
+            <Skeleton className="aspect-[4/3] w-full rounded-xl lg:max-h-[560px]" />
             <div className="mt-3 flex gap-2.5 overflow-hidden sm:gap-3">
-              {Array.from({ length: 5 }, (_, index) => <Skeleton key={index} className="h-16 w-16 shrink-0 rounded-md sm:aspect-square sm:h-auto sm:w-[calc((100%-2.5rem)/6)]" />)}
+              {Array.from({ length: 5 }, (_, index) => <Skeleton key={index} className="aspect-square w-[4.25rem] shrink-0 rounded-md sm:w-[calc((100%-2.5rem)/6)]" />)}
             </div>
 
             <div className="mt-8">

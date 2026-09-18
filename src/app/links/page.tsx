@@ -23,16 +23,6 @@ import BookingPlatformLinks from "@/app/components/pages/links/BookingPlatformLi
 import ContactLinksList from "@/app/components/pages/links/ContactLinksList";
 import { getContactLinks } from "@/app/lib/contactLinks";
 
-const roomImages = [
-  "/images/Staywithme77/staywithme77-exterior.webp",
-  "/images/Staywithme77/staywithme77-gallery-01.webp",
-  "/images/Staywithme77/staywithme77-gallery-02.webp",
-  "/images/Staywithme77/staywithme77-gallery-03.webp",
-  "/images/Staywithme77/staywithme77-gallery-04.webp",
-  "/images/Staywithme77/staywithme77-gallery-05.webp",
-  "/images/Staywithme77/staywithme77-gallery-06.webp",
-  "/images/Staywithme77/staywithme77-gallery-07.webp",
-];
 import linksMessages from "@/../messages/pages/links.json";
 
 function useDragScroll() {
@@ -300,12 +290,12 @@ export default function LinksPage() {
             {mockRooms.map((room, index) => (
               <Link
                 key={room.id}
-                href={`/${lang}/rooms/${room.id}`}
+                href={`/${lang}/rooms/${room.slug}`}
                 className="group w-[min(48vw,190px)] shrink-0 snap-start sm:w-[230px] md:w-[270px]"
               >
                 <div className="relative aspect-square overflow-hidden border-r border-white/20 bg-white/10 sm:aspect-[2/1]">
                   <Image
-                    src={roomImages[index % roomImages.length]}
+                    src={room.image}
                     alt={lang === "th" ? room.name : room.nameEn}
                     fill
                     sizes="(max-width: 640px) 48vw, 270px"
@@ -347,7 +337,10 @@ export default function LinksPage() {
             onMouseLeave={promotionsRail.onMouseLeave}
             onClick={promotionsRail.onClick}
           >
-            {copy.promotionItems.map((promotion, index) => (
+            {copy.promotionItems.map((promotion, index) => {
+              const room = mockRooms[index % mockRooms.length];
+
+              return (
               <Link
                 key={promotion.title}
                 href={`/${lang}/rooms`}
@@ -355,7 +348,7 @@ export default function LinksPage() {
               >
                 <div className="relative aspect-square overflow-hidden border-r border-white/20 bg-white/10 sm:aspect-[2/1]">
                   <Image
-                    src={roomImages[(index + 3) % roomImages.length]}
+                    src={room.image}
                     alt={promotion.title}
                     fill
                     sizes="(max-width: 640px) 48vw, 270px"
@@ -375,7 +368,8 @@ export default function LinksPage() {
                   </div>
                 </div>
               </Link>
-            ))}
+              );
+            })}
           </div>
         </section>
 

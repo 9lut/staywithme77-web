@@ -25,7 +25,7 @@ export default function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
       }} />
       <nav
         aria-label={t("aria")}
-        className="mb-6 flex items-center gap-1.5 text-xs text-gray-400 md:mt-[20px]"
+        className="scrollbar-none mb-5 flex max-w-full items-center gap-1.5 overflow-x-auto whitespace-nowrap pb-1 text-xs text-gray-400 sm:mb-6 md:mt-[20px]"
       >
       <Link
         href="/"
@@ -36,7 +36,7 @@ export default function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
       {items.map((item) => (
         <span
           key={`${item.href ?? "current"}-${item.label}`}
-          className="flex items-center gap-1.5"
+          className="flex shrink-0 items-center gap-1.5"
         >
           <ChevronRight
             size={13}

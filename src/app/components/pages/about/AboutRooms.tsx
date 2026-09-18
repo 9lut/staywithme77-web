@@ -67,7 +67,7 @@ export default function AboutRooms() {
                 className="flex flex-col border border-[#d8d1c5] bg-white"
               >
                 <Link
-                  href={`/rooms/${room.id}`}
+                  href={`/rooms/${room.slug}`}
                   className="group relative block aspect-[4/3] overflow-hidden border-b border-[#d8d1c5] bg-[#eee9e1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent"
                   aria-label={`${t("rooms.viewDetails")}: ${name}`}
                 >
@@ -116,7 +116,7 @@ export default function AboutRooms() {
                       </p>
                     </div>
                     <Link
-                      href={`/rooms/${room.id}`}
+                      href={`/rooms/${room.slug}`}
                       className="inline-flex items-center gap-1 border-b border-foreground pb-1 text-xs font-bold text-foreground transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent sm:text-sm"
                     >
                       {t("rooms.viewDetails")}

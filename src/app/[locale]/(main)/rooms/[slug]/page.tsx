@@ -1,9 +1,26 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
-import { notFound } from "next/navigation";
-import { BedDouble, CheckCircle2, Maximize2, UsersRound } from "lucide-react";
-import { mockRooms } from "@/app/lib/mockDb";
+import { notFound, permanentRedirect } from "next/navigation";
+import {
+  BedDouble,
+  Building2,
+  CheckCircle2,
+  Maximize2,
+  Refrigerator,
+  ShowerHead,
+  Snowflake,
+  Sofa,
+  Sparkles,
+  Tv,
+  UsersRound,
+  Wifi,
+} from "lucide-react";
+import {
+  getMockRoomById,
+  getMockRoomBySlug,
+  mockRooms,
+} from "@/app/lib/mockDb";
 import Breadcrumbs from "@/app/components/ui/Breadcrumbs";
 import RoomGallery from "@/app/components/ui/RoomGallery";
 import JsonLd from "@/app/components/seo/JsonLd";
@@ -11,12 +28,22 @@ import RoomViewTracker from "@/app/components/analytics/RoomViewTracker";
 import MobileBookingBar from "@/app/components/main/MobileBookingBar";
 import { localizedAlternates, localizedPath } from "@/app/lib/seo";
 import { siteConfig } from "@/app/lib/siteConfig";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 
-type Params = { id: string; locale: string };
+type Params = { slug: string; locale: string };
+
+const amenityIcons = {
+  wifi: Wifi,
+  ac: Snowflake,
+  tv: Tv,
+  fridge: Refrigerator,
+  shower: ShowerHead,
+  city: Building2,
+  sofa: Sofa,
+} as const;
 
 export async function generateStaticParams() {
-  return mockRooms.map((room) => ({ id: room.id }));
+  return mockRooms.map((room) => ({ slug: room.slug }));
 }
 
 export async function generateMetadata({
@@ -24,9 +51,9 @@ export async function generateMetadata({
 }: {
   params: Promise<Params>;
 }): Promise<Metadata> {
-  const { id, locale } = await params;
+  const { slug, locale } = await params;
   const t = await getTranslations({ locale, namespace: "RoomDetail" });
-  const room = mockRooms.find((item) => item.id === id);
+  const room = getMockRoomBySlug(slug) ?? getMockRoomById(slug);
   if (!room) return { title: t("notFound") };
 
   const roomName = locale === "en" ? room.nameEn : room.name;
@@ -34,12 +61,12 @@ export async function generateMetadata({
   return {
     title: roomName,
     description,
-    alternates: localizedAlternates(locale, `/rooms/${room.id}`),
+    alternates: localizedAlternates(locale, `/rooms/${room.slug}`),
     openGraph: {
       title: `${roomName} | ${siteConfig.brand.displayName}`,
       description,
       type: "website",
-      url: localizedPath(locale, `/rooms/${room.id}`),
+      url: localizedPath(locale, `/rooms/${room.slug}`),
       images: room.images.map((image) => ({ url: image.url, alt: roomName })),
     },
   };
@@ -50,10 +77,13 @@ export default async function RoomDetailPage({
 }: {
   params: Promise<Params>;
 }) {
-  const { id } = await params;
-  const locale = await getLocale();
+  const { slug, locale } = await params;
   const t = await getTranslations("RoomDetail");
-  const room = mockRooms.find((item) => item.id === id);
+  const room = getMockRoomBySlug(slug);
+  const legacyRoom = room ? undefined : getMockRoomById(slug);
+  if (legacyRoom) {
+    permanentRedirect(localizedPath(locale, `/rooms/${legacyRoom.slug}`));
+  }
   if (!room) notFound();
 
   const roomName = locale === "en" ? room.nameEn : room.name;
@@ -62,10 +92,10 @@ export default async function RoomDetailPage({
   const bedType = locale === "en" ? room.bedTypeEn : room.bedType;
   const amenities = locale === "en" ? room.amenitiesEn : room.amenities;
   const otherRooms = mockRooms
-    .filter((item) => item.id !== id && item.featured)
+    .filter((item) => item.id !== room.id && item.featured)
     .slice(0, 2);
   const directBookingUrl = siteConfig.bookingLinks.direct
-    ? `${siteConfig.bookingLinks.direct}?room=${room.id}`
+    ? `${siteConfig.bookingLinks.direct}?room=${room.slug}`
     : "";
   const platformLinks = [
     {
@@ -89,7 +119,7 @@ export default async function RoomDetailPage({
   ];
 
   return (
-    <div className="bg-background px-4 pb-32 pt-36 md:pb-20">
+    <div className="overflow-x-clip bg-background px-4 pb-[calc(8rem+env(safe-area-inset-bottom))] pt-32 sm:pt-36 md:pb-20">
       <RoomViewTracker roomId={room.id} roomName={room.nameEn} />
       <MobileBookingBar available={room.available} />
       <JsonLd
@@ -99,15 +129,12 @@ export default async function RoomDetailPage({
           name: roomName,
           description: roomDescription,
           image: room.images.map((image) => image.url),
-          url: localizedPath(locale, `/rooms/${room.id}`),
+          url: localizedPath(locale, `/rooms/${room.slug}`),
           occupancy: { "@type": "QuantitativeValue", maxValue: room.capacity },
           offers: {
             "@type": "Offer",
             price: room.price,
             priceCurrency: siteConfig.business.currency,
-            availability: room.available
-              ? "https://schema.org/InStock"
-              : "https://schema.org/OutOfStock",
           },
         }}
       />
@@ -117,24 +144,19 @@ export default async function RoomDetailPage({
           items={[{ label: t("rooms"), href: "/rooms" }, { label: roomName }]}
         />
 
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-12">
-          <div>
+        <div className="grid min-w-0 gap-8 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-12">
+          <div className="min-w-0">
             <RoomGallery
               images={room.images.map((image) => image.url)}
               name={roomName}
             />
             <div className="mt-8">
-              <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
                 <div>
                   <h1 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
                     {roomName}
                   </h1>
                 </div>
-                <span
-                  className={`rounded-full px-3 py-1 text-xs font-semibold ${room.available ? "bg-emerald-50 text-emerald-700" : "bg-rose-50 text-rose-700"}`}
-                >
-                  {room.available ? t("available") : t("full")}
-                </span>
               </div>
 
               <div className="mt-5 flex flex-wrap gap-2 text-xs text-gray-600">
@@ -160,18 +182,24 @@ export default async function RoomDetailPage({
                   {roomDescription}
                 </p>
                 <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {amenities.map((amenity) => (
-                    <div
-                      key={amenity}
-                      className="flex items-center gap-2 text-sm text-gray-600"
-                    >
-                      <CheckCircle2
-                        size={15}
-                        className="shrink-0 text-emerald-500"
-                      />
-                      {amenity}
-                    </div>
-                  ))}
+                  {amenities.map((amenity, index) => {
+                    const AmenityIcon =
+                      amenityIcons[
+                        room.amenityKeys[index] as keyof typeof amenityIcons
+                      ] ?? Sparkles;
+
+                    return (
+                      <div
+                        key={amenity}
+                        className="flex items-center gap-2.5 text-sm text-gray-600"
+                      >
+                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#fff7e8] text-accent">
+                          <AmenityIcon size={16} strokeWidth={1.9} />
+                        </span>
+                        {amenity}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -294,7 +322,7 @@ export default async function RoomDetailPage({
             <div className="grid gap-6 md:grid-cols-2">
               {otherRooms.map((other) => (
                 <Link
-                  href={`/rooms/${other.id}`}
+                  href={`/rooms/${other.slug}`}
                   key={other.id}
                   id={`related-room-${other.id}`}
                   className="flex gap-4 rounded-2xl border border-[#f3f4f6] bg-white p-4 transition-all duration-200 hover:shadow-md"

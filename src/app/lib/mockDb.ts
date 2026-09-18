@@ -40,11 +40,12 @@ export type RoomDbRecord = {
 
 type RawRoom = {
   id: string;
+  slug: string;
   capacity: number;
   price: number;
   available: boolean;
   size: number;
-  image: string | string[];
+  image: string | string[] | RawRoomImage[];
   amenityKeys: string[];
   featured?: boolean;
   bookingLinks?: RoomBookingLinks;
@@ -52,15 +53,30 @@ type RawRoom = {
   en: RoomDbTranslation;
 };
 
-function toImageRecords(roomId: string, image: string | string[]): RoomImage[] {
-  const urls = Array.isArray(image) ? image : [image];
+type RawRoomImage = {
+  url: string;
+  sortOrder?: number;
+  isCover?: boolean;
+};
 
-  return urls.map((url, index) => ({
+function toImageRecords(
+  roomId: string,
+  image: string | string[] | RawRoomImage[],
+): RoomImage[] {
+  const entries = (Array.isArray(image) ? image : [image]).map((entry, index) =>
+    typeof entry === "string"
+      ? { url: entry, sortOrder: index, isCover: index === 0 }
+      : {
+          url: entry.url,
+          sortOrder: entry.sortOrder ?? index,
+          isCover: entry.isCover ?? false,
+        },
+  );
+
+  return entries.map((entry, index) => ({
     id: roomId + "-image-" + (index + 1),
-    url,
-    sortOrder: index,
-    isCover: index === 0,
-  }));
+    ...entry,
+  })).sort((a, b) => a.sortOrder - b.sortOrder);
 }
 
 function toStatus(available: boolean): RoomStatus {
@@ -71,7 +87,7 @@ export const mockRoomRecords: RoomDbRecord[] = (
   roomContent.rooms as RawRoom[]
 ).map((room) => ({
   id: room.id,
-  slug: "room-" + room.id,
+  slug: room.slug,
   capacity: room.capacity,
   sizeSqm: room.size,
   pricing: {
@@ -85,6 +101,7 @@ export const mockRoomRecords: RoomDbRecord[] = (
   featured: room.featured ?? false,
   amenityKeys: room.amenityKeys,
   images: toImageRecords(room.id, room.image),
+  bookingLinks: room.bookingLinks,
   translations: {
     th: room.th,
     en: room.en,
@@ -96,7 +113,8 @@ export const mockRoomRecords: RoomDbRecord[] = (
  * database-shaped record. RoomCard and RoomGallery can consume this safely.
  */
 export const mockRooms: Room[] = mockRoomRecords.map((room) => {
-  const coverImage = room.images[0]?.url ?? "";
+  const coverImage =
+    room.images.find((image) => image.isCover)?.url ?? room.images[0]?.url ?? "";
 
   return {
     id: room.id,
@@ -127,6 +145,10 @@ export const featuredRooms = mockRooms.filter((room) => room.featured);
 
 export function getMockRoomById(id: string) {
   return mockRooms.find((room) => room.id === id);
+}
+
+export function getMockRoomBySlug(slug: string) {
+  return mockRooms.find((room) => room.slug === slug);
 }
 
 export function getMockRoomRecordById(id: string) {
